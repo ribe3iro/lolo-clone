@@ -10,8 +10,16 @@ import Modelo.Elemento;
 import Modelo.Grama;
 import Modelo.Lolo;
 import Modelo.Obstaculo;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  *
@@ -26,10 +34,50 @@ public class Fase extends ArrayList<Elemento> implements Serializable{
         return (Lolo)this.get(0);
     }
     
+    public boolean salvar(String nomeArq){
+        try {
+            File file = new File(new java.io.File(".").getCanonicalPath() + File.separator + "fases" + File.separator + nomeArq);
+            file.createNewFile();
+            FileOutputStream fileOS = new FileOutputStream(file);
+            GZIPOutputStream compactador = new GZIPOutputStream(fileOS);
+            ObjectOutputStream serializador = new ObjectOutputStream(compactador);
+            serializador.writeObject(this);
+            serializador.flush();
+            serializador.close();
+        } catch (IOException ex) {
+            System.out.println("Erro ao salvar fase "+nomeArq);
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public static Fase carregar(String nomeArq){
+        Fase fase = null;
+        try {
+            File file = new File(new java.io.File(".").getCanonicalPath() + File.separator + "fases" + File.separator + nomeArq);
+            FileInputStream fileIS = new FileInputStream(file);
+            GZIPInputStream compactador = new GZIPInputStream(fileIS);
+            ObjectInputStream serializador = new ObjectInputStream(compactador);
+            fase = (Fase)serializador.readObject();
+            serializador.close();
+        } catch (IOException ex) {
+            System.out.println("Erro IO ao carregar fase " + nomeArq);
+        }
+        catch (ClassNotFoundException ex) {
+            System.out.println("Erro ClassNotFound ao carregar fase " + nomeArq);
+        }
+        
+        return fase;
+    }
+    
     public static void main(String[] args){
+        // Criando fase1.level
+        
         Fase fase = new Fase();
         /*Cria e adiciona personagens*/
         // Lolo
+        
         fase.add(new Lolo(8, 6));
         
         // Bordas
@@ -95,5 +143,7 @@ public class Fase extends ArrayList<Elemento> implements Serializable{
         fase.add(new Cobra(2, 2));
         fase.add(new Cobra(6, 4));
         fase.add(new Cobra(6, 8));
+        
+        fase.salvar("fase1.level");
     }
 }
