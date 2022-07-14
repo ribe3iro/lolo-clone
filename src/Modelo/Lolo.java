@@ -22,14 +22,9 @@ import javax.swing.JPanel;
  *
  * @author Junio
  */
-public class Lolo extends Personagem implements Serializable{
+public class Lolo extends Elemento implements Movel{
     private ArrayList<ImageIcon> sprites;
     private int direcao;
-    
-    public static final int DOWN_DIR  = 0;
-    public static final int LEFT_DIR  = 1;
-    public static final int UP_DIR    = 2;
-    public static final int RIGHT_DIR = 3;
     
     public Lolo(int linha, int coluna) {
         super(linha, coluna, null);
@@ -39,10 +34,6 @@ public class Lolo extends Personagem implements Serializable{
         for(int i = 0; i <= 3; i++){
             sprites.add(carregarImagem(nomeImagem + i + ".png")); 
        }
-    }
-    
-    protected void atualizar(){
-        
     }
     
     private ImageIcon carregarImagem(String nomeImagem){
@@ -68,6 +59,30 @@ public class Lolo extends Personagem implements Serializable{
         this.pPosicao.volta();
     }
 
+    public void atualizar(){
+        
+    }
+    
+    public boolean moveUp() {
+        direcao = Consts.UP_DIR;
+        return this.pPosicao.moveUp();
+    }
+
+    public boolean moveDown() {
+        direcao = Consts.DOWN_DIR;
+        return this.pPosicao.moveDown();
+    }
+
+    public boolean moveRight() {
+        direcao = Consts.RIGHT_DIR;
+        return this.pPosicao.moveRight();
+    }
+
+    public boolean moveLeft() {
+        direcao = Consts.LEFT_DIR;
+        return this.pPosicao.moveLeft();
+    }
+    
     public int getDirecao() {
         return direcao;
     }
@@ -77,6 +92,4 @@ public class Lolo extends Personagem implements Serializable{
             this.direcao = direcao;
         }
     }
-    
-    
 }

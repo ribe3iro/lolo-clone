@@ -8,31 +8,11 @@ package Modelo;
  *
  * @author joaop
  */
-public abstract class Movel extends Elemento {
-    public Movel(int linha, int coluna, String sNomeImagePNG) {
-        super(linha, coluna, sNomeImagePNG);
-    }
+public interface Movel {
+    public void atualizar();
     
-    abstract protected void atualizar();
-    
-    public void autoDesenho(){
-        this.atualizar();
-        super.autoDesenho();
-    }
-    
-    public boolean moveUp() {
-        return this.pPosicao.moveUp();
-    }
-
-    public boolean moveDown() {
-        return this.pPosicao.moveDown();
-    }
-
-    public boolean moveRight() {
-        return this.pPosicao.moveRight();
-    }
-
-    public boolean moveLeft() {
-        return this.pPosicao.moveLeft();
-    }
+    public boolean moveUp();
+    public boolean moveDown();
+    public boolean moveRight();
+    public boolean moveLeft();
 }

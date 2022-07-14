@@ -10,7 +10,6 @@
  */
 package Controler;
 
-import Modelo.Personagem;
 import Modelo.Lolo;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
@@ -164,7 +163,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("POO2015-1 - Adventures of lolo");
         setAutoRequestFocus(false);
-        setPreferredSize(new java.awt.Dimension(500, 500));
         setResizable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

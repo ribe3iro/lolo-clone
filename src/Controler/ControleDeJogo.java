@@ -11,7 +11,6 @@ import Modelo.Cobra;
 import Modelo.Elemento;
 import Modelo.Grama;
 import Modelo.Inimigo;
-import Modelo.Personagem;
 import Modelo.Lolo;
 import Modelo.Obstaculo;
 import auxiliar.Posicao;
@@ -71,19 +70,21 @@ public class ControleDeJogo {
  
     public void teclaPressionada(int keyCode){
         Lolo lolo = faseAtual.getLolo();
-        if (keyCode == KeyEvent.VK_UP) {
-            lolo.moveUp();
-            lolo.setDirecao(Lolo.UP_DIR);
-        } else if (keyCode == KeyEvent.VK_DOWN) {
-            lolo.moveDown();
-            lolo.setDirecao(Lolo.DOWN_DIR);
-        } else if (keyCode == KeyEvent.VK_LEFT) {
-            lolo.moveLeft();
-            lolo.setDirecao(Lolo.LEFT_DIR);
-        } else if (keyCode == KeyEvent.VK_RIGHT) {
-            lolo.moveRight();
-            lolo.setDirecao(Lolo.RIGHT_DIR);
+        switch(keyCode){
+            case KeyEvent.VK_UP:
+                lolo.moveUp();
+                break;
+            case KeyEvent.VK_DOWN:
+                lolo.moveDown();
+                break;
+            case KeyEvent.VK_LEFT:
+                lolo.moveLeft();
+                break;
+            case KeyEvent.VK_RIGHT:
+                lolo.moveRight();
+                break;
         }
+        
         if (!this.ehPosicaoValida(lolo.getPosicao())) {
             lolo.voltaAUltimaPosicao();
         }
