@@ -6,6 +6,7 @@ package Controler;
 
 import Auxiliar.Consts;
 import Modelo.Cobra;
+import Modelo.Coracao;
 import Modelo.Elemento;
 import Modelo.Grama;
 import Modelo.Lolo;
@@ -143,6 +144,14 @@ public class Fase extends ArrayList<Elemento> implements Serializable{
         fase.add(new Cobra(2, 2));
         fase.add(new Cobra(6, 4));
         fase.add(new Cobra(6, 8));
+        
+        // Colecionáveis
+        fase.add(new Coracao(1, 8, 2));
+        fase.add(new Coracao(1, 11));
+        fase.add(new Coracao(2, 1));
+        fase.add(new Coracao(11, 2));
+        fase.add(new Coracao(11, 8));
+        fase.add(new Coracao(11, 9));
         
         fase.salvar("fase1.level");
     }

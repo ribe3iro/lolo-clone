@@ -8,6 +8,8 @@ package Controler;
 
 import Auxiliar.Consts;
 import Modelo.Cobra;
+import Modelo.Colecionavel;
+import Modelo.Coracao;
 import Modelo.Elemento;
 import Modelo.Grama;
 import Modelo.Inimigo;
@@ -60,9 +62,28 @@ public class ControleDeJogo {
                 this.vidas--;
                 if(this.vidas > 0){
                     carregarFase(this.nomeFaseAtual);
+                    this.municao = 0;
                 }else{
                     // gameover
                     faseAtual.remove(lolo);
+                }
+            }
+        }
+        
+        List<Colecionavel> colecionaveisList = faseAtual.stream()
+                                       .filter(elem -> elem instanceof Colecionavel)
+                                       .map(elem -> (Colecionavel)elem)
+                                       .toList();
+        ArrayList<Colecionavel> colecionaveis = new ArrayList(colecionaveisList);
+        
+        Colecionavel colecionavelTemp;
+        for(int i = 0; i < colecionaveis.size(); i++){
+            colecionavelTemp = colecionaveis.get(i);
+            if(lolo.getPosicao().igual(colecionavelTemp.getPosicao())){
+                faseAtual.remove(colecionavelTemp);
+                if(colecionavelTemp instanceof Coracao){
+                    this.municao += ((Coracao)colecionavelTemp).getMunicao();
+                    System.out.println(this.municao);
                 }
             }
         }
