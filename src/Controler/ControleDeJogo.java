@@ -15,6 +15,7 @@ import Modelo.Grama;
 import Modelo.Inimigo;
 import Modelo.Lolo;
 import Modelo.Obstaculo;
+import Modelo.Tiro;
 import auxiliar.Posicao;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class ControleDeJogo {
     public void processaTudo(){
         Lolo lolo = (Lolo)faseAtual.get(0);
         
+        // Processando Inimigos
         List<Inimigo> inimigosList = faseAtual.stream()
                                        .filter(elem -> elem instanceof Inimigo)
                                        .map(elem -> (Inimigo)elem)
@@ -70,6 +72,7 @@ public class ControleDeJogo {
             }
         }
         
+        // Processando colecionáveis
         List<Colecionavel> colecionaveisList = faseAtual.stream()
                                        .filter(elem -> elem instanceof Colecionavel)
                                        .map(elem -> (Colecionavel)elem)
@@ -85,6 +88,35 @@ public class ControleDeJogo {
                     this.municao += ((Coracao)colecionavelTemp).getMunicao();
                     System.out.println(this.municao);
                 }
+            }
+        }
+        
+        // Processando tiros
+        List<Tiro> tirosList = faseAtual.stream()
+                                       .filter(elem -> elem instanceof Tiro)
+                                       .map(elem -> (Tiro)elem)
+                                       .toList();
+        ArrayList<Tiro> tiros = new ArrayList(tirosList);
+        
+        Tiro tiroTemp;
+        Elemento colisor;
+        Posicao posTiro = new Posicao(0, 0);
+        for(int i = 0; i < tiros.size(); i++){
+            tiroTemp = tiros.get(i);
+            posTiro.setPosicao(tiroTemp.getPosicao().getLinha(), tiroTemp.getPosicao().getColuna());
+            colisor = faseAtual.stream()
+                                       .filter(elem -> elem.getPosicao().igual(posTiro))
+                                       .findFirst()
+                                       .orElse(null);
+            if(colisor == null){
+                continue;
+            }
+            if(colisor instanceof Inimigo){
+                faseAtual.remove(tiroTemp);
+                faseAtual.remove(colisor);
+            }
+            if(colisor instanceof Obstaculo){
+                faseAtual.remove(tiroTemp);
             }
         }
     }
@@ -104,6 +136,30 @@ public class ControleDeJogo {
             case KeyEvent.VK_RIGHT:
                 lolo.moveRight();
                 break;
+                
+            case KeyEvent.VK_SPACE:
+                if(municao <= 0){
+                    break;
+                }
+                int linha = lolo.getPosicao().getLinha();
+                int coluna = lolo.getPosicao().getColuna();
+                int direcao = lolo.getDirecao();
+                switch(direcao){
+                    case Consts.DOWN_DIR:
+                        linha += 1;
+                        break;
+                    case Consts.LEFT_DIR:
+                        coluna -= 1;
+                        break;
+                    case Consts.UP_DIR:
+                        linha -= 1;
+                        break;
+                    case Consts.RIGHT_DIR:
+                        coluna += 1;
+                        break;
+                }
+                faseAtual.add(new Tiro(linha, coluna, direcao));
+                municao--;
         }
         
         if (!this.ehPosicaoValida(lolo.getPosicao())) {

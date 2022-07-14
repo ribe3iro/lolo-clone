@@ -84,8 +84,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 }
             }
         }
-        controleDeJogo.desenhaTudo();
         controleDeJogo.processaTudo();
+        controleDeJogo.desenhaTudo();
 
         g.dispose();
         g2.dispose();
