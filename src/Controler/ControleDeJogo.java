@@ -11,10 +11,12 @@ import Modelo.Cobra;
 import Modelo.Colecionavel;
 import Modelo.Coracao;
 import Modelo.Elemento;
+import Modelo.Empurravel;
 import Modelo.Grama;
 import Modelo.Inimigo;
 import Modelo.Lolo;
 import Modelo.Obstaculo;
+import Modelo.Perola;
 import Modelo.Tiro;
 import auxiliar.Posicao;
 import java.awt.event.KeyEvent;
@@ -86,7 +88,6 @@ public class ControleDeJogo {
                 faseAtual.remove(colecionavelTemp);
                 if(colecionavelTemp instanceof Coracao){
                     this.municao += ((Coracao)colecionavelTemp).getMunicao();
-                    System.out.println(this.municao);
                 }
             }
         }
@@ -112,7 +113,10 @@ public class ControleDeJogo {
                 continue;
             }
             if(colisor instanceof Inimigo){
+                int linha = colisor.getPosicao().getLinha();
+                int coluna = colisor.getPosicao().getColuna();
                 faseAtual.remove(tiroTemp);
+                faseAtual.add(new Perola(linha, coluna));
                 faseAtual.remove(colisor);
             }
             if(colisor instanceof Obstaculo){
@@ -165,17 +169,59 @@ public class ControleDeJogo {
         if (!this.ehPosicaoValida(lolo.getPosicao())) {
             lolo.voltaAUltimaPosicao();
         }
+        
+        this.verificarEmpurrar();
+    }
+    
+    private void verificarEmpurrar(){
+        Lolo lolo = this.faseAtual.getLolo();
+        // Processando Empurráveis
+        List<Empurravel> empurraveisList = faseAtual.stream()
+                                       .filter(elem -> elem instanceof Empurravel)
+                                       .map(elem -> (Empurravel)elem)
+                                       .toList();
+        ArrayList<Empurravel> empurraveis = new ArrayList(empurraveisList);
+        Empurravel empurravelTemp;
+        for(int i = 0; i < empurraveis.size(); i++){
+            empurravelTemp = empurraveis.get(i);
+            if(lolo.getPosicao().igual(empurravelTemp.getPosicao())){
+                switch(lolo.getDirecao()){
+                    case Consts.DOWN_DIR:
+                        empurravelTemp.moveDown();
+                        break;
+                    case Consts.LEFT_DIR:
+                        empurravelTemp.moveLeft();
+                        break;
+                    case Consts.UP_DIR:
+                        empurravelTemp.moveUp();
+                        break;
+                    case Consts.RIGHT_DIR:
+                        empurravelTemp.moveRight();
+                        break;
+                }
+                if(!ehPosicaoValida(empurravelTemp.getPosicao())){
+                    empurravelTemp.voltaAUltimaPosicao();
+                    lolo.voltaAUltimaPosicao();
+                }
+            }
+        }
     }
     
     /*Retorna true se a posicao p é válida para Lolo com relacao a todos os personagens no array*/
-    public boolean ehPosicaoValida(Posicao p){
-        Elemento pTemp;
-        for(int i = 1; i < faseAtual.size(); i++){
-            pTemp = faseAtual.get(i);            
-            if(!pTemp.isbTransponivel())
-                if(pTemp.getPosicao().igual(p))
-                    return false;
-        }        
+    private boolean ehPosicaoValida(Posicao p){
+        // Processando Obstáculos
+        List<Obstaculo> obstaculosList = faseAtual.stream()
+                                       .filter(elem -> elem instanceof Obstaculo)
+                                       .map(elem -> (Obstaculo)elem)
+                                       .toList();
+        ArrayList<Obstaculo> obstaculos = new ArrayList(obstaculosList);
+        Obstaculo obstaculoTemp;
+        for(int i = 0; i < obstaculos.size(); i++){
+            obstaculoTemp = obstaculos.get(i);
+            if(p.igual(obstaculoTemp.getPosicao())){
+                return false;
+            }
+        }
         return true;
     }
 }
