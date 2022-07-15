@@ -19,11 +19,11 @@ import javax.swing.ImageIcon;
  */
 public class Porta extends Elemento {
     boolean bAberto = false;
-    ImageIcon portaAberta = carregarImagem("porta_aberta.jpeg");
-    ImageIcon portaFechada = carregarImagem("porta_fechada.jpeg");
+    ImageIcon portaAberta = carregarImagem("porta_aberta.png");
+    ImageIcon portaFechada = carregarImagem("porta_fechada.png");
 
-    public Porta(int linha, int coluna, String sNomeImagePNG) {
-        super(linha, coluna, sNomeImagePNG);
+    public Porta(int linha, int coluna) {
+        super(linha, coluna, null);
         this.setbTransponivel(false);
     }
 

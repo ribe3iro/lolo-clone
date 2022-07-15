@@ -19,11 +19,11 @@ import javax.swing.ImageIcon;
  */
 public class Bau extends Elemento {
     boolean bAberto = false;
-    ImageIcon bauAberto = carregarImagem("bau_aberto.jpeg");
-    ImageIcon bauFechado = carregarImagem("bau_fechado.jpeg");
+    ImageIcon bauAberto = carregarImagem("bau_aberto.png");
+    ImageIcon bauFechado = carregarImagem("bau_fechado.png");
 
-    public Bau(int linha, int coluna, String sNomeImagePNG) {
-        super(linha, coluna, sNomeImagePNG);
+    public Bau(int linha, int coluna) {
+        super(linha, coluna, null);
         this.setbTransponivel(false);
     }
 

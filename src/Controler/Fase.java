@@ -85,7 +85,7 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
         fase1.add(new Lolo(8, 6));
 
         // bau
-        fase1.add(new Bau(3, 6, "bau_fechado.jpeg"));
+        fase1.add(new Bau(3, 6));
 
         // Bordas
         for (int i = 0; i < Consts.RES; i++) {
@@ -95,7 +95,7 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
         for (int j = 1; j < Consts.RES - 1; j++) {
 
             if (j == 6) {
-                fase1.add(new Porta(0, j, "porta_fechada.jpeg"));
+                fase1.add(new Porta(0, j));
             } else {
                 fase1.add(new Obstaculo(0, j, "parede_horizontal.png"));
             }
@@ -171,7 +171,7 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
         Fase fase2 = new Fase();
         /* Cria e adiciona personagens */
         fase2.add(new Lolo(11, 11));
-        fase2.add(new Bau(1, 1, "bau_fechado.jpeg"));
+        fase2.add(new Bau(1, 1));
         for (int i = 0; i < Consts.RES; i++) {
             fase2.add(new Obstaculo(i, 0, "parede_vertical.png"));
             fase2.add(new Obstaculo(i, Consts.RES - 1, "parede_vertical.png"));
@@ -179,7 +179,7 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
         for (int j = 1; j < Consts.RES - 1; j++) {
 
             if (j == 7) {
-                fase2.add(new Porta(0, j, "porta_fechada.jpeg"));
+                fase2.add(new Porta(0, j));
             } else {
                 fase2.add(new Obstaculo(0, j, "parede_horizontal.png"));
             }
