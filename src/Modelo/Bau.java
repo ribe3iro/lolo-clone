@@ -18,19 +18,27 @@ import javax.swing.ImageIcon;
  * @author caior
  */
 public class Bau extends Elemento {
-    boolean bAberto = false;
+    boolean bAberto;
+    boolean bTemPerola;
 
-    ImageIcon bauAberto = carregarImagem("bau_aberto.png");
+    ImageIcon bauAbertoSemPerola = carregarImagem("bau_aberto.png");
+    ImageIcon bauAbertComPerola = carregarImagem("bau_aberto_com_perola.png");
     ImageIcon bauFechado = carregarImagem("bau_fechado.png");
 
     public Bau(int linha, int coluna) {
         super(linha, coluna, null);
+        this.bAberto = false;
+        this.bTemPerola = true;
         this.setbTransponivel(true);
     }
 
     public void autoDesenho() {
         if (this.bAberto) {
-            Desenho.desenhar(bauAberto, pPosicao.getColuna(), pPosicao.getLinha());
+            if(this.bTemPerola){
+                Desenho.desenhar(bauAbertComPerola, pPosicao.getColuna(), pPosicao.getLinha());
+            }else{
+                Desenho.desenhar(bauAbertoSemPerola, pPosicao.getColuna(), pPosicao.getLinha());
+            }
         } else {
             Desenho.desenhar(bauFechado, pPosicao.getColuna(), pPosicao.getLinha());
         }
@@ -59,5 +67,8 @@ public class Bau extends Elemento {
     public void setbAberto(boolean bAberto) {
         this.bAberto = bAberto;
     }
-
+    
+    public void setbTemPerola(boolean bTemPerola) {
+        this.bTemPerola = bTemPerola;
+    }
 }

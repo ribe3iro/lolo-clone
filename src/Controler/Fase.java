@@ -299,6 +299,17 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
         fase3.add(new Obstaculo(9, 6, "arvore.png"));
         fase3.add(new Obstaculo(10, 5, "arvore.png"));
         fase3.add(new Obstaculo(11, 9, "arvore.png"));
+        
+        fase3.add(new Obstaculo(5, 4, "agua.png"));
+        fase3.add(new Obstaculo(6, 4, "agua.png"));
+        fase3.add(new Obstaculo(7, 4, "agua.png"));
+        fase3.add(new Obstaculo(7, 5, "agua.png"));
+        fase3.add(new Obstaculo(8, 4, "agua.png"));
+        fase3.add(new Obstaculo(8, 5, "agua.png"));
+        fase3.add(new Obstaculo(8, 6, "agua.png"));
+        fase3.add(new Obstaculo(9, 4, "agua.png"));
+        fase3.add(new Obstaculo(9, 5, "agua.png"));
+        fase3.add(new Obstaculo(10, 4, "agua.png"));
 
         // Inimigos
         fase3.add(new Tatu(1, 1));
@@ -319,6 +330,7 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
         fase3.add(new BlocoEmpurravel(10, 2));
         fase3.add(new BlocoEmpurravel(10, 3));
         fase3.add(new BlocoEmpurravel(7, 10));
+        
 
         fase3.salvar("fase3.level");
 

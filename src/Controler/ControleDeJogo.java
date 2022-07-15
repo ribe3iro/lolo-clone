@@ -154,6 +154,7 @@ public class ControleDeJogo {
         // porta.setbTransponivel(false);
         if (lolo.getPosicao().igual(bau.getPosicao()) && bau.isbAberto()) {
             porta.setbAberto(true);
+            bau.setbTemPerola(false);
             inimigos.stream()
                     .forEach(inimigo -> {
                         faseAtual.remove(inimigo);

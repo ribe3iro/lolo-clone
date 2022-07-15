@@ -9,15 +9,7 @@ package Modelo;
  * @author joaop
  */
 public class Obstaculo extends Elemento{
-    boolean empurravel;
-    
-    public Obstaculo(int linha, int coluna, String sNomeImagePNG) {
+public Obstaculo(int linha, int coluna, String sNomeImagePNG) {
         super(linha, coluna, sNomeImagePNG);
-        this.empurravel = false;
-    }
-    
-    public Obstaculo(int linha, int coluna, String sNomeImagePNG, boolean empurravel) {
-        super(linha, coluna, sNomeImagePNG);
-        this.empurravel = empurravel;
     }
 }
