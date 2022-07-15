@@ -46,7 +46,7 @@ import javax.swing.JButton;
  */
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
 
-    private ControleDeJogo controleDeJogo = new ControleDeJogo(5, 0, "fase1.level");
+    private ControleDeJogo controleDeJogo = new ControleDeJogo(5, 0, "fase2.level");
     private Graphics g2;
 
     /**
