@@ -186,9 +186,67 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
             fase2.add(new Obstaculo(Consts.RES - 1, j, "parede_horizontal.png"));
         }
 
+        fase2.add(new Obstaculo(7, 11, "arvore.png"));
         fase2.add(new Obstaculo(11, 10, "arvore.png"));
         fase2.add(new Obstaculo(10, 10, "arvore.png"));
         fase2.add(new Obstaculo(10, 10, "arvore.png"));
+        fase2.add(new Obstaculo(8, 10, "arvore.png"));
+        fase2.add(new Obstaculo(4, 10, "arvore.png"));
+        fase2.add(new Obstaculo(3, 10, "arvore.png"));
+        fase2.add(new Obstaculo(8, 9, "arvore.png"));
+        fase2.add(new Obstaculo(9, 8, "arvore.png"));
+        fase2.add(new Obstaculo(1, 8, "arvore.png"));
+        fase2.add(new Obstaculo(2, 8, "arvore.png"));
+        fase2.add(new Obstaculo(4, 8, "arvore.png"));
+        fase2.add(new Obstaculo(6, 7, "arvore.png"));
+        fase2.add(new Obstaculo(8, 7, "arvore.png"));
+        fase2.add(new Obstaculo(10, 7, "arvore.png"));
+        fase2.add(new Obstaculo(1, 6, "arvore.png"));
+        fase2.add(new Obstaculo(2, 6, "arvore.png"));
+        fase2.add(new Obstaculo(5, 6, "arvore.png"));
+        fase2.add(new Obstaculo(10, 6, "arvore.png"));
+        fase2.add(new Obstaculo(1, 5, "arvore.png"));
+        fase2.add(new Obstaculo(6, 5, "arvore.png"));
+        fase2.add(new Obstaculo(1, 4, "arvore.png"));
+        fase2.add(new Obstaculo(2, 4, "arvore.png"));
+        fase2.add(new Obstaculo(8, 4, "arvore.png"));
+        fase2.add(new Obstaculo(10, 4, "arvore.png"));
+        fase2.add(new Obstaculo(6, 3, "arvore.png"));
+        fase2.add(new Obstaculo(1, 2, "arvore.png"));
+        fase2.add(new Obstaculo(5, 2, "arvore.png"));
+        fase2.add(new Obstaculo(11, 2, "arvore.png"));
+        fase2.add(new Obstaculo(7, 1, "arvore.png"));
+
+        fase2.add(new Obstaculo(2, 10, "pedra.png"));
+        fase2.add(new Obstaculo(5, 1, "pedra.png"));
+        fase2.add(new Obstaculo(11, 1, "pedra.png"));
+        fase2.add(new Obstaculo(3, 2, "pedra.png"));
+        fase2.add(new Obstaculo(4, 2, "pedra.png"));
+        fase2.add(new Obstaculo(10, 2, "pedra.png"));
+        fase2.add(new Obstaculo(8, 3, "pedra.png"));
+        fase2.add(new Obstaculo(4, 4, "pedra.png"));
+        fase2.add(new Obstaculo(6, 4, "pedra.png"));
+        fase2.add(new Obstaculo(11, 4, "pedra.png"));
+        fase2.add(new Obstaculo(8, 5, "pedra.png"));
+        fase2.add(new Obstaculo(4, 6, "pedra.png"));
+        fase2.add(new Obstaculo(8, 6, "pedra.png"));
+        fase2.add(new Obstaculo(3, 8, "pedra.png"));
+        fase2.add(new Obstaculo(8, 8, "pedra.png"));
+        fase2.add(new Obstaculo(6, 9, "pedra.png"));
+        fase2.add(new Obstaculo(11, 9, "pedra.png"));
+        fase2.add(new Obstaculo(2, 10, "pedra.png"));
+        fase2.add(new Obstaculo(5, 10, "pedra.png"));
+        // Inimigos
+        fase2.add(new Cobra(7, 5));
+
+        // colecionaveis
+        fase2.add(new Coracao(6, 1,2));
+        fase2.add(new Coracao(10, 1));
+        fase2.add(new Coracao(1, 3));
+        fase2.add(new Coracao(6, 6));
+        fase2.add(new Coracao(1, 7));
+        fase2.add(new Coracao(9, 7, 2));
+        fase2.add(new Coracao(8, 11));
 
         fase2.salvar("fase2.level");
 
