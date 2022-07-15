@@ -8,13 +8,8 @@ package Modelo;
  *
  * @author joaop
  */
-public interface Movel {
-    public void atualizar();
-    
-    public boolean moveUp();
-    public boolean moveDown();
-    public boolean moveRight();
-    public boolean moveLeft();
-    
-    public void voltaAUltimaPosicao();
+public class Perola extends Empurravel {
+    public Perola(int linha, int coluna) {
+        super(linha, coluna, "perola.png");
+    }
 }

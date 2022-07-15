@@ -10,12 +10,14 @@ import Modelo.Cobra;
 import Modelo.Colecionavel;
 import Modelo.Coracao;
 import Modelo.Elemento;
+import Modelo.Empurravel;
 import Modelo.Grama;
 import Modelo.Bau;
 import Modelo.Inimigo;
 import Modelo.Lolo;
 import Modelo.Obstaculo;
 import Modelo.Porta;
+import Modelo.Perola;
 import Modelo.Tiro;
 import Auxiliar.Posicao;
 import java.awt.event.KeyEvent;
@@ -101,9 +103,8 @@ public class ControleDeJogo {
             colecionavelTemp = colecionaveis.get(i);
             if (lolo.getPosicao().igual(colecionavelTemp.getPosicao())) {
                 faseAtual.remove(colecionavelTemp);
-                if (colecionavelTemp instanceof Coracao coracao) {
-                    this.municao += coracao.getMunicao();
-                    System.out.println(this.municao);
+                if(colecionavelTemp instanceof Coracao){
+                    this.municao += ((Coracao)colecionavelTemp).getMunicao();
                 }
             }
 
@@ -139,8 +140,11 @@ public class ControleDeJogo {
             if (colisor == null) {
                 continue;
             }
-            if (colisor instanceof Inimigo) {
+            if(colisor instanceof Inimigo){
+                int linha = colisor.getPosicao().getLinha();
+                int coluna = colisor.getPosicao().getColuna();
                 faseAtual.remove(tiroTemp);
+                faseAtual.add(new Perola(linha, coluna));
                 faseAtual.remove(colisor);
             }
             if (colisor instanceof Obstaculo) {
@@ -193,8 +197,44 @@ public class ControleDeJogo {
         if (!this.ehPosicaoValida(lolo.getPosicao())) {
             lolo.voltaAUltimaPosicao();
         }
+        
+        this.verificarEmpurrar();
     }
-
+    
+    private void verificarEmpurrar(){
+        Lolo lolo = this.faseAtual.getLolo();
+        // Processando Empurráveis
+        List<Empurravel> empurraveisList = faseAtual.stream()
+                                       .filter(elem -> elem instanceof Empurravel)
+                                       .map(elem -> (Empurravel)elem)
+                                       .toList();
+        ArrayList<Empurravel> empurraveis = new ArrayList(empurraveisList);
+        Empurravel empurravelTemp;
+        for(int i = 0; i < empurraveis.size(); i++){
+            empurravelTemp = empurraveis.get(i);
+            if(lolo.getPosicao().igual(empurravelTemp.getPosicao())){
+                switch(lolo.getDirecao()){
+                    case Consts.DOWN_DIR:
+                        empurravelTemp.moveDown();
+                        break;
+                    case Consts.LEFT_DIR:
+                        empurravelTemp.moveLeft();
+                        break;
+                    case Consts.UP_DIR:
+                        empurravelTemp.moveUp();
+                        break;
+                    case Consts.RIGHT_DIR:
+                        empurravelTemp.moveRight();
+                        break;
+                }
+                if(!ehPosicaoValida(empurravelTemp.getPosicao())){
+                    empurravelTemp.voltaAUltimaPosicao();
+                    lolo.voltaAUltimaPosicao();
+                }
+            }
+        }
+    }
+    
     /*
      * Retorna true se a posicao p é válida para Lolo com relacao a todos os
      * personagens no array
