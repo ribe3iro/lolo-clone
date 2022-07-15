@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Controler;
 
 import Auxiliar.Consts;
@@ -13,12 +12,14 @@ import Modelo.Coracao;
 import Modelo.Elemento;
 import Modelo.Empurravel;
 import Modelo.Grama;
+import Modelo.Bau;
 import Modelo.Inimigo;
 import Modelo.Lolo;
 import Modelo.Obstaculo;
+import Modelo.Porta;
 import Modelo.Perola;
 import Modelo.Tiro;
-import auxiliar.Posicao;
+import Auxiliar.Posicao;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,88 +29,115 @@ import java.util.List;
  * @author junio
  */
 public class ControleDeJogo {
+
     private int vidas;
     private int municao;
     private Fase faseAtual;
     private String nomeFaseAtual;
-    
-    public ControleDeJogo(int vidas, int municao, String nomeFaseInicial){
+
+    public ControleDeJogo(int vidas, int municao, String nomeFaseInicial) {
         this.vidas = vidas;
         this.municao = municao;
         carregarFase(nomeFaseInicial);
     }
-    
-    private void carregarFase(String nomeFase){
+
+    private void carregarFase(String nomeFase) {
         this.nomeFaseAtual = nomeFase;
         this.faseAtual = Fase.carregar(nomeFase);
     }
-    
-    public void desenhaTudo(){
-        for(int i = faseAtual.size()-1; i >= 0; i--){
+
+    public void desenhaTudo() {
+        for (int i = faseAtual.size() - 1; i >= 0; i--) {
             faseAtual.get(i).autoDesenho();
+            // System.out.print(faseAtual.get(i).toString());
+            // System.out.print(i);
+            // System.out.print("\n");
         }
     }
-    public void processaTudo(){
-        Lolo lolo = (Lolo)faseAtual.get(0);
-        
+
+    public void processaTudo() {
+        Lolo lolo = (Lolo) faseAtual.get(0);
+
         // Processando Inimigos
         List<Inimigo> inimigosList = faseAtual.stream()
-                                       .filter(elem -> elem instanceof Inimigo)
-                                       .map(elem -> (Inimigo)elem)
-                                       .toList();
+                .filter(elem -> elem instanceof Inimigo)
+                .map(elem -> (Inimigo) elem)
+                .toList();
         ArrayList<Inimigo> inimigos = new ArrayList(inimigosList);
-        
+
         Inimigo inimigoTemp;
-        for(int i = 0; i < inimigos.size(); i++){
+        for (int i = 0; i < inimigos.size(); i++) {
             inimigoTemp = inimigos.get(i);
-            if(lolo.getPosicao().igual(inimigoTemp.getPosicao()) && inimigoTemp.isbMortal()){
+            if (lolo.getPosicao().igual(inimigoTemp.getPosicao()) && inimigoTemp.isbMortal()) {
                 this.vidas--;
-                if(this.vidas > 0){
+                if (this.vidas > 0) {
                     carregarFase(this.nomeFaseAtual);
                     this.municao = 0;
-                }else{
+                } else {
                     // gameover
                     faseAtual.remove(lolo);
                 }
             }
         }
-        
+
+        // Bau bau = (Bau) ((ArrayList<Elemento>) faseAtual.stream().filter(elem -> elem
+        // instanceof Bau)).get(0);
+        Bau bau = faseAtual.stream().filter(elem -> elem instanceof Bau).map(elem -> (Bau) elem).findFirst()
+                .orElse(null);
+
+        // Porta porta = (Porta) ((ArrayList<Elemento>) faseAtual.stream().filter(elem
+        // -> elem instanceof Porta)).get(0);
+        Porta porta = faseAtual.stream().filter(elem -> elem instanceof Porta).map(elem -> (Porta) elem).findFirst()
+                .orElse(null);
+
         // Processando colecionáveis
+
         List<Colecionavel> colecionaveisList = faseAtual.stream()
-                                       .filter(elem -> elem instanceof Colecionavel)
-                                       .map(elem -> (Colecionavel)elem)
-                                       .toList();
+                .filter(elem -> elem instanceof Colecionavel)
+                .map(elem -> (Colecionavel) elem)
+                .toList();
         ArrayList<Colecionavel> colecionaveis = new ArrayList(colecionaveisList);
-        
+        int colecionaveisSize = colecionaveis.size();
         Colecionavel colecionavelTemp;
-        for(int i = 0; i < colecionaveis.size(); i++){
+        for (int i = 0; i < colecionaveisSize; i++) {
             colecionavelTemp = colecionaveis.get(i);
-            if(lolo.getPosicao().igual(colecionavelTemp.getPosicao())){
+            if (lolo.getPosicao().igual(colecionavelTemp.getPosicao())) {
                 faseAtual.remove(colecionavelTemp);
                 if(colecionavelTemp instanceof Coracao){
                     this.municao += ((Coracao)colecionavelTemp).getMunicao();
                 }
             }
+
         }
-        
+
+        // bau.setbTransponivel(false);
+        if (colecionaveisSize == 0) {
+            bau.setbAberto(true);
+        }
+
+        // porta.setbTransponivel(false);
+        if (lolo.getPosicao().igual(bau.getPosicao())) {
+            porta.setbAberto(true);
+        }
+
         // Processando tiros
         List<Tiro> tirosList = faseAtual.stream()
-                                       .filter(elem -> elem instanceof Tiro)
-                                       .map(elem -> (Tiro)elem)
-                                       .toList();
+                .filter(elem -> elem instanceof Tiro)
+                .map(elem -> (Tiro) elem)
+                .toList();
         ArrayList<Tiro> tiros = new ArrayList(tirosList);
-        
+
         Tiro tiroTemp;
         Elemento colisor;
         Posicao posTiro = new Posicao(0, 0);
-        for(int i = 0; i < tiros.size(); i++){
+        for (int i = 0; i < tiros.size(); i++) {
             tiroTemp = tiros.get(i);
             posTiro.setPosicao(tiroTemp.getPosicao().getLinha(), tiroTemp.getPosicao().getColuna());
             colisor = faseAtual.stream()
-                                       .filter(elem -> elem.getPosicao().igual(posTiro))
-                                       .findFirst()
-                                       .orElse(null);
-            if(colisor == null){
+                    .filter(elem -> elem.getPosicao().igual(posTiro))
+                    .findFirst()
+                    .orElse(null);
+            if (colisor == null) {
                 continue;
             }
             if(colisor instanceof Inimigo){
@@ -119,15 +147,15 @@ public class ControleDeJogo {
                 faseAtual.add(new Perola(linha, coluna));
                 faseAtual.remove(colisor);
             }
-            if(colisor instanceof Obstaculo){
+            if (colisor instanceof Obstaculo) {
                 faseAtual.remove(tiroTemp);
             }
         }
     }
- 
-    public void teclaPressionada(int keyCode){
+
+    public void teclaPressionada(int keyCode) {
         Lolo lolo = faseAtual.getLolo();
-        switch(keyCode){
+        switch (keyCode) {
             case KeyEvent.VK_UP:
                 lolo.moveUp();
                 break;
@@ -140,15 +168,15 @@ public class ControleDeJogo {
             case KeyEvent.VK_RIGHT:
                 lolo.moveRight();
                 break;
-                
+
             case KeyEvent.VK_SPACE:
-                if(municao <= 0){
+                if (municao <= 0) {
                     break;
                 }
                 int linha = lolo.getPosicao().getLinha();
                 int coluna = lolo.getPosicao().getColuna();
                 int direcao = lolo.getDirecao();
-                switch(direcao){
+                switch (direcao) {
                     case Consts.DOWN_DIR:
                         linha += 1;
                         break;
@@ -165,7 +193,7 @@ public class ControleDeJogo {
                 faseAtual.add(new Tiro(linha, coluna, direcao));
                 municao--;
         }
-        
+
         if (!this.ehPosicaoValida(lolo.getPosicao())) {
             lolo.voltaAUltimaPosicao();
         }
@@ -207,19 +235,18 @@ public class ControleDeJogo {
         }
     }
     
-    /*Retorna true se a posicao p é válida para Lolo com relacao a todos os personagens no array*/
-    private boolean ehPosicaoValida(Posicao p){
-        // Processando Obstáculos
-        List<Obstaculo> obstaculosList = faseAtual.stream()
-                                       .filter(elem -> elem instanceof Obstaculo)
-                                       .map(elem -> (Obstaculo)elem)
-                                       .toList();
-        ArrayList<Obstaculo> obstaculos = new ArrayList(obstaculosList);
-        Obstaculo obstaculoTemp;
-        for(int i = 0; i < obstaculos.size(); i++){
-            obstaculoTemp = obstaculos.get(i);
-            if(p.igual(obstaculoTemp.getPosicao())){
-                return false;
+    /*
+     * Retorna true se a posicao p é válida para Lolo com relacao a todos os
+     * personagens no array
+     */
+    public boolean ehPosicaoValida(Posicao p) {
+        Elemento pTemp;
+        for (int i = 1; i < faseAtual.size(); i++) {
+            pTemp = faseAtual.get(i);
+            if (!pTemp.isbTransponivel()) {
+                if (pTemp.getPosicao().igual(p)) {
+                    return false;
+                }
             }
         }
         return true;
