@@ -19,6 +19,8 @@ import javax.swing.ImageIcon;
  */
 public class Bau extends Elemento {
     boolean bAberto = false;
+    ImageIcon bauAberto = carregarImagem("bau_aberto.jpeg");
+    ImageIcon bauFechado = carregarImagem("bau_fechado.jpeg");
 
     public Bau(int linha, int coluna, String sNomeImagePNG) {
         super(linha, coluna, sNomeImagePNG);
@@ -28,9 +30,9 @@ public class Bau extends Elemento {
     public void autoDesenho() {
         if (this.bAberto) {
             this.setbTransponivel(true);
-            Desenho.desenhar(carregarImagem("bau_aberto.jpeg"), pPosicao.getColuna(), pPosicao.getLinha());
+            Desenho.desenhar(bauAberto, pPosicao.getColuna(), pPosicao.getLinha());
         } else {
-            Desenho.desenhar(carregarImagem("bau_fechado.jpeg"), pPosicao.getColuna(), pPosicao.getLinha());
+            Desenho.desenhar(bauFechado, pPosicao.getColuna(), pPosicao.getLinha());
         }
 
     }

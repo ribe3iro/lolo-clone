@@ -19,6 +19,8 @@ import javax.swing.ImageIcon;
  */
 public class Porta extends Elemento {
     boolean bAberto = false;
+    ImageIcon portaAberta = carregarImagem("porta_aberta.jpeg");
+    ImageIcon portaFechada = carregarImagem("porta_fechada.jpeg");
 
     public Porta(int linha, int coluna, String sNomeImagePNG) {
         super(linha, coluna, sNomeImagePNG);
@@ -28,9 +30,9 @@ public class Porta extends Elemento {
     public void autoDesenho() {
         if (this.bAberto) {
             this.setbTransponivel(true);
-            Desenho.desenhar(carregarImagem("porta_aberta.jpeg"), pPosicao.getColuna(), pPosicao.getLinha());
+            Desenho.desenhar(portaAberta, pPosicao.getColuna(), pPosicao.getLinha());
         } else {
-            Desenho.desenhar(carregarImagem("porta_fechada.jpeg"), pPosicao.getColuna(), pPosicao.getLinha());
+            Desenho.desenhar(portaFechada, pPosicao.getColuna(), pPosicao.getLinha());
         }
 
     }

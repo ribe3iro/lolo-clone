@@ -110,7 +110,7 @@ public class ControleDeJogo {
         }
 
         // bau.setbTransponivel(false);
-        if ((colecionaveisSize == 0 || bau.isbTransponivel()) || (porta.isbTransponivel())) {
+        if (colecionaveisSize == 0) {
             bau.setbAberto(true);
         }
 
