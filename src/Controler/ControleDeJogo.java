@@ -312,6 +312,14 @@ public class ControleDeJogo {
         return true;
     }
     
+    public int getVidas(){
+        return this.vidas;
+    }
+    
+    public int getMunicao(){
+        return this.municao;
+    }
+    
     public static ImageIcon carregarImagem(String nomeImagem){
         ImageIcon iImage = null;
         try {
