@@ -164,42 +164,13 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
     public void keyPressed(KeyEvent e) {
-        /*
-         * if (e.getKeyCode() == KeyEvent.VK_C) {
-         * this.e.clear();
-         * } else if (e.getKeyCode() == KeyEvent.VK_L) {
-         * try {
-         * File tanque = new File("c:\\temp\\POO.zip");
-         * FileInputStream canoOut = new FileInputStream(tanque);
-         * GZIPInputStream compactador = new GZIPInputStream(canoOut);
-         * ObjectInputStream serializador = new ObjectInputStream(compactador);
-         * this.e = (ArrayList<Elemento>)serializador.readObject();
-         * this.lLolo = (Lolo)this.e.get(0);
-         * serializador.close();
-         * } catch (Exception ex) {
-         * Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
-         * }
-         * } else if (e.getKeyCode() == KeyEvent.VK_S) {
-         * try {
-         * File tanque = new File("c:\\temp\\POO.zip");
-         * tanque.createNewFile();
-         * FileOutputStream canoOut = new FileOutputStream(tanque);
-         * GZIPOutputStream compactador = new GZIPOutputStream(canoOut);
-         * ObjectOutputStream serializador = new ObjectOutputStream(compactador);
-         * serializador.writeObject(this.e);
-         * serializador.flush();
-         * serializador.close();
-         * } catch (IOException ex) {
-         * Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
-         * }
-         * } else
-         */
-        
         if(e.getKeyCode() == KeyEvent.VK_R && controleDeJogo.isGameOver()){
             controleDeJogo = new ControleDeJogo(5, 0, this);
         }
         
-        controleDeJogo.teclaPressionada(e.getKeyCode());
+        if(!controleDeJogo.isGameOver()){
+            controleDeJogo.teclaPressionada(e.getKeyCode());
+        }
         // repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
     }
     

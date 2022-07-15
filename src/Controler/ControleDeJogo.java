@@ -96,6 +96,7 @@ public class ControleDeJogo {
                 } else {
                     gameOver = true;
                 }
+                break;
             }
         }
         
@@ -236,10 +237,8 @@ public class ControleDeJogo {
     }
 
     public void teclaPressionada(int keyCode) {
-        if(this.isGameOver()){
-            return;
-        }
         Lolo lolo = faseAtual.getLolo();
+        Elemento auxElemento;
         
         switch (keyCode) {
             case KeyEvent.VK_UP:
@@ -278,6 +277,20 @@ public class ControleDeJogo {
                 }
                 faseAtual.add(new Tiro(linha, coluna, direcao));
                 municao--;
+                break;
+                
+            case KeyEvent.VK_Z: // invoca cobra
+                auxElemento = Elemento.carregar("cobra.elem");
+                faseAtual.add(auxElemento);
+                break;
+            case KeyEvent.VK_X: // invoca caveira acordada
+                auxElemento = Elemento.carregar("caveira.elem");
+                faseAtual.add(auxElemento);
+                break;
+            case KeyEvent.VK_C: // invoca tatu
+                auxElemento = Elemento.carregar("tatu.elem");
+                faseAtual.add(auxElemento);
+                break;
         }
 
         this.verificarEmpurrar();
@@ -342,6 +355,7 @@ public class ControleDeJogo {
                 pTemp = faseAtual.get(i);
                 if ((!pTemp.isbTransponivel() || 
                         (pTemp instanceof Colecionavel) || 
+                        (pTemp instanceof Inimigo) || 
                         (pTemp instanceof Bau)) && 
                         analisado != pTemp) {
                     if (pTemp.getPosicao().igual(analisado.getPosicao())) {

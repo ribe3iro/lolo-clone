@@ -334,5 +334,15 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
 
         fase3.salvar("fase3.level");
 
+        // Elementos dinâmicos serializados
+        Cobra cobra = new Cobra(5, 9);
+        cobra.salvar("cobra.elem");
+        
+        Caveira caveira = new Caveira(7, 9);
+        caveira.acordar();
+        caveira.salvar("caveira.elem");
+        
+        Tatu tatu = new Tatu(7, 9);
+        tatu.salvar("tatu.elem");
     }
 }

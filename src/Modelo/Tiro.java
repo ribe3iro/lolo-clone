@@ -14,6 +14,7 @@ public class Tiro extends Elemento implements Movel {
     int direcao;
     public Tiro(int linha, int coluna, int direcao){
         super(linha, coluna, "tiro.png");
+        this.setbTransponivel(true);
         this.direcao = direcao;
     }
     
