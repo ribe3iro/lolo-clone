@@ -35,7 +35,7 @@ public class ControleDeJogo {
     private Fase faseAtual;
     private int numFaseAtual;
     private int maxFases;
-    
+
     public ControleDeJogo(int vidas, int municao) {
         this.vidas = vidas;
         this.municao = municao;
@@ -92,8 +92,8 @@ public class ControleDeJogo {
         // -> elem instanceof Porta)).get(0);
         Porta porta = faseAtual.stream().filter(elem -> elem instanceof Porta).map(elem -> (Porta) elem).findFirst()
                 .orElse(null);
-        
-        if(lolo.getPosicao().igual(porta.getPosicao()) && porta.isbAberto()){
+
+        if (lolo.getPosicao().igual(porta.getPosicao()) && porta.isbAberto()) {
             this.proximaFase();
         }
 
@@ -110,8 +110,8 @@ public class ControleDeJogo {
             colecionavelTemp = colecionaveis.get(i);
             if (lolo.getPosicao().igual(colecionavelTemp.getPosicao())) {
                 faseAtual.remove(colecionavelTemp);
-                if(colecionavelTemp instanceof Coracao){
-                    this.municao += ((Coracao)colecionavelTemp).getMunicao();
+                if (colecionavelTemp instanceof Coracao) {
+                    this.municao += ((Coracao) colecionavelTemp).getMunicao();
                 }
             }
 
@@ -123,7 +123,7 @@ public class ControleDeJogo {
         }
 
         // porta.setbTransponivel(false);
-        if (lolo.getPosicao().igual(bau.getPosicao())) {
+        if (lolo.getPosicao().igual(bau.getPosicao()) && bau.isbAberto()) {
             porta.setbAberto(true);
         }
 
@@ -147,7 +147,7 @@ public class ControleDeJogo {
             if (colisor == null) {
                 continue;
             }
-            if(colisor instanceof Inimigo){
+            if (colisor instanceof Inimigo) {
                 int linha = colisor.getPosicao().getLinha();
                 int coluna = colisor.getPosicao().getColuna();
                 faseAtual.remove(tiroTemp);
@@ -158,11 +158,11 @@ public class ControleDeJogo {
                 faseAtual.remove(tiroTemp);
             }
             if (colisor instanceof Perola) {
-                ((Perola)colisor).voar(tiroTemp.getDirecao());
+                ((Perola) colisor).voar(tiroTemp.getDirecao());
                 faseAtual.remove(tiroTemp);
             }
         }
-        
+
         // Processando perolas voando
         List<Perola> perolasVoandoList = faseAtual.stream()
                 .filter(elem -> elem instanceof Perola)
@@ -176,15 +176,15 @@ public class ControleDeJogo {
             perolaTemp = perolasVoando.get(i);
             int linha = perolaTemp.getPosicao().getLinha();
             int coluna = perolaTemp.getPosicao().getColuna();
-            if(linha >= Consts.RES-1 || linha <= 0 || coluna >= Consts.RES-1 || coluna <= 0){
+            if (linha >= Consts.RES - 1 || linha <= 0 || coluna >= Consts.RES - 1 || coluna <= 0) {
                 faseAtual.remove(perolaTemp);
             }
         }
     }
-    
-    public void proximaFase(){
+
+    public void proximaFase() {
         this.numFaseAtual++;
-        if(numFaseAtual <= maxFases){
+        if (numFaseAtual <= maxFases) {
             this.carregarFase(numFaseAtual);
             this.municao = 0;
         }
@@ -230,27 +230,27 @@ public class ControleDeJogo {
                 faseAtual.add(new Tiro(linha, coluna, direcao));
                 municao--;
         }
-        
+
         this.verificarEmpurrar();
 
         if (!this.ehPosicaoValida(lolo)) {
             lolo.voltaAUltimaPosicao();
         }
     }
-    
-    private void verificarEmpurrar(){
+
+    private void verificarEmpurrar() {
         Lolo lolo = this.faseAtual.getLolo();
         // Processando Empurráveis
         List<Empurravel> empurraveisList = faseAtual.stream()
-                                       .filter(elem -> elem instanceof Empurravel)
-                                       .map(elem -> (Empurravel)elem)
-                                       .toList();
+                .filter(elem -> elem instanceof Empurravel)
+                .map(elem -> (Empurravel) elem)
+                .toList();
         ArrayList<Empurravel> empurraveis = new ArrayList(empurraveisList);
         Empurravel empurravelTemp;
-        for(int i = 0; i < empurraveis.size(); i++){
+        for (int i = 0; i < empurraveis.size(); i++) {
             empurravelTemp = empurraveis.get(i);
-            if(lolo.getPosicao().igual(empurravelTemp.getPosicao())){
-                switch(lolo.getDirecao()){
+            if (lolo.getPosicao().igual(empurravelTemp.getPosicao())) {
+                switch (lolo.getDirecao()) {
                     case Consts.DOWN_DIR:
                         empurravelTemp.moveDown();
                         break;
@@ -264,14 +264,14 @@ public class ControleDeJogo {
                         empurravelTemp.moveRight();
                         break;
                 }
-                if(!ehPosicaoValida(empurravelTemp)){
+                if (!ehPosicaoValida(empurravelTemp)) {
                     empurravelTemp.voltaAUltimaPosicao();
                     lolo.voltaAUltimaPosicao();
                 }
             }
         }
     }
-    
+
     /*
      * Retorna true se a posicao p é válida para Lolo com relacao a todos os
      * personagens no array

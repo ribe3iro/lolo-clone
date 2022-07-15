@@ -12,6 +12,7 @@ import Modelo.Grama;
 import Modelo.Lolo;
 import Modelo.Obstaculo;
 import Modelo.Bau;
+import Modelo.BlocoEmpurravel;
 import Modelo.Porta;
 import java.io.File;
 import java.io.FileInputStream;
@@ -240,7 +241,7 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
         fase2.add(new Cobra(7, 5));
 
         // colecionaveis
-        fase2.add(new Coracao(6, 1,2));
+        fase2.add(new Coracao(6, 1, 2));
         fase2.add(new Coracao(10, 1));
         fase2.add(new Coracao(1, 3));
         fase2.add(new Coracao(6, 6));
@@ -249,6 +250,72 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
         fase2.add(new Coracao(8, 11));
 
         fase2.salvar("fase2.level");
+
+        // Fase 3
+        Fase fase3 = new Fase();
+        fase3.add(new Lolo(11, 6));
+        fase3.add(new Bau(5, 2));
+        for (int i = 0; i < Consts.RES; i++) {
+            fase3.add(new Obstaculo(i, 0, "parede_vertical.png"));
+            fase3.add(new Obstaculo(i, Consts.RES - 1, "parede_vertical.png"));
+        }
+        for (int j = 1; j < Consts.RES - 1; j++) {
+
+            if (j == 7) {
+                fase3.add(new Porta(0, j));
+            } else {
+                fase3.add(new Obstaculo(0, j, "parede_horizontal.png"));
+            }
+            fase3.add(new Obstaculo(Consts.RES - 1, j, "parede_horizontal.png"));
+        }
+        fase3.add(new Obstaculo(1, 4, "pedra.png"));
+        fase3.add(new Obstaculo(1, 9, "pedra.png"));
+        fase3.add(new Obstaculo(2, 4, "pedra.png"));
+        fase3.add(new Obstaculo(2, 5, "pedra.png"));
+        fase3.add(new Obstaculo(2, 8, "pedra.png"));
+        fase3.add(new Obstaculo(2, 9, "pedra.png"));
+        fase3.add(new Obstaculo(4, 2, "pedra.png"));
+        fase3.add(new Obstaculo(4, 3, "pedra.png"));
+        fase3.add(new Obstaculo(4, 4, "pedra.png"));
+        fase3.add(new Obstaculo(5, 5, "pedra.png"));
+        fase3.add(new Obstaculo(8, 10, "pedra.png"));
+        fase3.add(new Obstaculo(9, 9, "pedra.png"));
+        fase3.add(new Obstaculo(10, 9, "pedra.png"));
+        fase3.add(new Obstaculo(1, 5, "arvore.png"));
+        fase3.add(new Obstaculo(1, 6, "arvore.png"));
+        fase3.add(new Obstaculo(2, 6, "arvore.png"));
+        fase3.add(new Obstaculo(4, 1, "arvore.png"));
+        fase3.add(new Obstaculo(4, 5, "arvore.png"));
+        fase3.add(new Obstaculo(4, 6, "arvore.png"));
+        fase3.add(new Obstaculo(4, 7, "arvore.png"));
+        fase3.add(new Obstaculo(4, 9, "arvore.png"));
+        fase3.add(new Obstaculo(4, 10, "arvore.png"));
+        fase3.add(new Obstaculo(5, 6, "arvore.png"));
+        fase3.add(new Obstaculo(8, 9, "arvore.png"));
+        fase3.add(new Obstaculo(9, 6, "arvore.png"));
+        fase3.add(new Obstaculo(10, 5, "arvore.png"));
+        fase3.add(new Obstaculo(11, 9, "arvore.png"));
+
+        // Inimigos
+        // fase3.add(new Rolas(1, 1));
+        // colecionaveis
+        fase3.add(new Coracao(1, 8));
+        fase3.add(new Coracao(3, 4));
+        fase3.add(new Coracao(5, 1));
+        fase3.add(new Coracao(5, 3));
+        fase3.add(new Coracao(8, 2));
+        fase3.add(new Coracao(9, 10));
+
+        // bloco empurravel
+        fase3.add(new BlocoEmpurravel(7, 1));
+        fase3.add(new BlocoEmpurravel(7, 2));
+        fase3.add(new BlocoEmpurravel(7, 3));
+        fase3.add(new BlocoEmpurravel(10, 1));
+        fase3.add(new BlocoEmpurravel(10, 2));
+        fase3.add(new BlocoEmpurravel(10, 3));
+        fase3.add(new BlocoEmpurravel(7, 10));
+
+        fase3.salvar("fase3.level");
 
     }
 }
