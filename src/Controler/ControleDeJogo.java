@@ -20,9 +20,15 @@ import Modelo.Porta;
 import Modelo.Perola;
 import Modelo.Tiro;
 import Auxiliar.Posicao;
+import Modelo.Caveira;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -82,6 +88,15 @@ public class ControleDeJogo {
                 }
             }
         }
+        
+        // Processando Caveiras Acordadas
+        inimigos.stream()
+                .filter(inimigo -> inimigo instanceof Caveira && ((Caveira)inimigo).isAcordada() && !this.ehPosicaoValida(inimigo))
+                .map(inimigo -> (Caveira)inimigo)
+                .forEach(caveira -> {
+                    caveira.virar();
+                    caveira.voltaAUltimaPosicao();
+                });
 
         // Bau bau = (Bau) ((ArrayList<Elemento>) faseAtual.stream().filter(elem -> elem
         // instanceof Bau)).get(0);
@@ -120,11 +135,19 @@ public class ControleDeJogo {
         // bau.setbTransponivel(false);
         if (colecionaveisSize == 0) {
             bau.setbAberto(true);
+            inimigos.stream()
+                    .filter(inimigo -> inimigo instanceof Caveira && !((Caveira)inimigo).isAcordada())
+                    .map(inimigo -> (Caveira)inimigo)
+                    .forEach(Caveira::acordar);
         }
 
         // porta.setbTransponivel(false);
         if (lolo.getPosicao().igual(bau.getPosicao())) {
             porta.setbAberto(true);
+            inimigos.stream()
+                    .forEach(inimigo -> {
+                        faseAtual.remove(inimigo);
+                    });
         }
 
         // Processando tiros
@@ -287,5 +310,20 @@ public class ControleDeJogo {
             }
         }
         return true;
+    }
+    
+    public static ImageIcon carregarImagem(String nomeImagem){
+        ImageIcon iImage = null;
+        try {
+            iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + nomeImagem);
+            Image img = iImage.getImage();
+            BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
+            Graphics g = bi.createGraphics();
+            g.drawImage(img, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+            iImage = new ImageIcon(bi);
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return iImage;
     }
 }

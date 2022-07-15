@@ -7,6 +7,7 @@ package Modelo;
 
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
+import Controler.ControleDeJogo;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -32,23 +33,8 @@ public class Lolo extends Elemento implements Movel{
         direcao = 0;
         String nomeImagem = "lolo";
         for(int i = 0; i <= 3; i++){
-            sprites.add(carregarImagem(nomeImagem + i + ".png")); 
+            sprites.add(ControleDeJogo.carregarImagem(nomeImagem + i + ".png")); 
        }
-    }
-    
-    private ImageIcon carregarImagem(String nomeImagem){
-        ImageIcon iImage = null;
-        try {
-            iImage = new ImageIcon(new java.io.File(".").getCanonicalPath() + Consts.PATH + nomeImagem);
-            Image img = iImage.getImage();
-            BufferedImage bi = new BufferedImage(Consts.CELL_SIDE, Consts.CELL_SIDE, BufferedImage.TYPE_INT_ARGB);
-            Graphics g = bi.createGraphics();
-            g.drawImage(img, 0, 0, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
-            iImage = new ImageIcon(bi);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return iImage;
     }
     
     public void autoDesenho(){
