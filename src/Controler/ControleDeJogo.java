@@ -33,16 +33,19 @@ public class ControleDeJogo {
     private int vidas;
     private int municao;
     private Fase faseAtual;
-    private String nomeFaseAtual;
-
-    public ControleDeJogo(int vidas, int municao, String nomeFaseInicial) {
+    private int numFaseAtual;
+    private int maxFases;
+    
+    public ControleDeJogo(int vidas, int municao) {
         this.vidas = vidas;
         this.municao = municao;
-        carregarFase(nomeFaseInicial);
+        this.numFaseAtual = 1;
+        this.maxFases = 3;
+        carregarFase(numFaseAtual);
     }
 
-    private void carregarFase(String nomeFase) {
-        this.nomeFaseAtual = nomeFase;
+    private void carregarFase(int numFase) {
+        String nomeFase = "fase" + numFase + ".level";
         this.faseAtual = Fase.carregar(nomeFase);
     }
 
@@ -71,7 +74,7 @@ public class ControleDeJogo {
             if (lolo.getPosicao().igual(inimigoTemp.getPosicao()) && inimigoTemp.isbMortal()) {
                 this.vidas--;
                 if (this.vidas > 0) {
-                    carregarFase(this.nomeFaseAtual);
+                    carregarFase(this.numFaseAtual);
                     this.municao = 0;
                 } else {
                     // gameover
@@ -89,6 +92,10 @@ public class ControleDeJogo {
         // -> elem instanceof Porta)).get(0);
         Porta porta = faseAtual.stream().filter(elem -> elem instanceof Porta).map(elem -> (Porta) elem).findFirst()
                 .orElse(null);
+        
+        if(lolo.getPosicao().igual(porta.getPosicao()) && porta.isbAberto()){
+            this.proximaFase();
+        }
 
         // Processando colecionáveis
 
@@ -150,6 +157,36 @@ public class ControleDeJogo {
             if (colisor instanceof Obstaculo) {
                 faseAtual.remove(tiroTemp);
             }
+            if (colisor instanceof Perola) {
+                ((Perola)colisor).voar(tiroTemp.getDirecao());
+                faseAtual.remove(tiroTemp);
+            }
+        }
+        
+        // Processando perolas voando
+        List<Perola> perolasVoandoList = faseAtual.stream()
+                .filter(elem -> elem instanceof Perola)
+                .map(elem -> (Perola) elem)
+                .filter(perola -> perola.isVoando())
+                .toList();
+        ArrayList<Perola> perolasVoando = new ArrayList(perolasVoandoList);
+
+        Perola perolaTemp;
+        for (int i = 0; i < perolasVoando.size(); i++) {
+            perolaTemp = perolasVoando.get(i);
+            int linha = perolaTemp.getPosicao().getLinha();
+            int coluna = perolaTemp.getPosicao().getColuna();
+            if(linha >= Consts.RES-1 || linha <= 0 || coluna >= Consts.RES-1 || coluna <= 0){
+                faseAtual.remove(perolaTemp);
+            }
+        }
+    }
+    
+    public void proximaFase(){
+        this.numFaseAtual++;
+        if(numFaseAtual <= maxFases){
+            this.carregarFase(numFaseAtual);
+            this.municao = 0;
         }
     }
 
@@ -193,12 +230,12 @@ public class ControleDeJogo {
                 faseAtual.add(new Tiro(linha, coluna, direcao));
                 municao--;
         }
-
-        if (!this.ehPosicaoValida(lolo.getPosicao())) {
-            lolo.voltaAUltimaPosicao();
-        }
         
         this.verificarEmpurrar();
+
+        if (!this.ehPosicaoValida(lolo)) {
+            lolo.voltaAUltimaPosicao();
+        }
     }
     
     private void verificarEmpurrar(){
@@ -227,7 +264,7 @@ public class ControleDeJogo {
                         empurravelTemp.moveRight();
                         break;
                 }
-                if(!ehPosicaoValida(empurravelTemp.getPosicao())){
+                if(!ehPosicaoValida(empurravelTemp)){
                     empurravelTemp.voltaAUltimaPosicao();
                     lolo.voltaAUltimaPosicao();
                 }
@@ -239,12 +276,12 @@ public class ControleDeJogo {
      * Retorna true se a posicao p é válida para Lolo com relacao a todos os
      * personagens no array
      */
-    public boolean ehPosicaoValida(Posicao p) {
+    public boolean ehPosicaoValida(Elemento analisado) {
         Elemento pTemp;
-        for (int i = 1; i < faseAtual.size(); i++) {
+        for (int i = 0; i < faseAtual.size(); i++) {
             pTemp = faseAtual.get(i);
-            if (!pTemp.isbTransponivel()) {
-                if (pTemp.getPosicao().igual(p)) {
+            if (!pTemp.isbTransponivel() && analisado != pTemp) {
+                if (pTemp.getPosicao().igual(analisado.getPosicao())) {
                     return false;
                 }
             }

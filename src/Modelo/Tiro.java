@@ -55,7 +55,9 @@ public class Tiro extends Elemento implements Movel {
         return this.pPosicao.moveLeft();
     }
     
-    public void voltaAUltimaPosicao(){
-        
+    public int getDirecao(){
+        return this.direcao;
     }
+    
+    public void voltaAUltimaPosicao(){}
 }
