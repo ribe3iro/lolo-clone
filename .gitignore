@@ -4,6 +4,7 @@
 **/nbproject/Package-*.bash
 build/
 fases/
+elementos/
 nbbuild/
 dist/
 nbdist/
