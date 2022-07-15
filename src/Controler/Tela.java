@@ -48,7 +48,7 @@ import javax.swing.JButton;
  */
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
 
-    private ControleDeJogo controleDeJogo = new ControleDeJogo(5, 0);
+    private ControleDeJogo controleDeJogo = new ControleDeJogo(5, 0, this);
     private Graphics g2;
 
     /**
@@ -89,39 +89,63 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 }
             }
         }
-        for (int i = 0; i < Consts.RES; i++) {
+        
+        if(controleDeJogo.isFinalizado()){
+            int meioTela = (Consts.RES * Consts.CELL_SIDE)/2;
+            Font font = new Font("Serif", Font.BOLD, 100);
+            g2.setFont(font);
+            g2.setColor(Color.GREEN);
+            g2.drawString("Parabéns!", meioTela - 180, meioTela - 100);
+
+            font = new Font("Serif", Font.BOLD, 30);
+            g2.setFont(font);
+            g2.setColor(Color.WHITE);
+            g2.drawString("Você finalizou o jogo!", meioTela - 100, meioTela - 40);
+            g2.drawString("Muito obrigado por jogar!", meioTela - 130, meioTela);
+            
+            g2.drawString("Jogo recriado por: Caio Rovetta", meioTela - 170, meioTela + 60);
+            g2.drawString("João Pedro Ribeiro", meioTela + 73, meioTela + 100);
+        }
+        else{
+            for (int i = 0; i < Consts.RES; i++) {
+                try {
+                    Image newImage = Toolkit.getDefaultToolkit()
+                            .getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "fundo.png");
+                    g2.drawImage(newImage,
+                            Consts.RES * Consts.CELL_SIDE, i * Consts.CELL_SIDE, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
             try {
                 Image newImage = Toolkit.getDefaultToolkit()
-                        .getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "fundo.png");
+                        .getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "lolo0.png");
                 g2.drawImage(newImage,
-                        Consts.RES * Consts.CELL_SIDE, i * Consts.CELL_SIDE, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+                        Consts.RES * Consts.CELL_SIDE, 1 * Consts.CELL_SIDE, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+                newImage = Toolkit.getDefaultToolkit()
+                        .getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "tiro.png");
+                g2.drawImage(newImage,
+                        Consts.RES * Consts.CELL_SIDE, 5 * Consts.CELL_SIDE, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+                Font font = new Font("Arial", Font.BOLD, 40);
+                g2.setFont(font);
+                g2.setColor(Color.WHITE);
+                g2.drawString(Integer.toString(controleDeJogo.getVidas()), Consts.RES * Consts.CELL_SIDE + 25, 3 * Consts.CELL_SIDE);
+                g2.drawString(Integer.toString(controleDeJogo.getMunicao()), Consts.RES * Consts.CELL_SIDE + 25, 7 * Consts.CELL_SIDE);
 
             } catch (IOException ex) {
                 Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        
-        try {
-            Image newImage = Toolkit.getDefaultToolkit()
-                    .getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "lolo0.png");
-            g2.drawImage(newImage,
-                    Consts.RES * Consts.CELL_SIDE, 1 * Consts.CELL_SIDE, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
-            newImage = Toolkit.getDefaultToolkit()
-                    .getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "tiro.png");
-            g2.drawImage(newImage,
-                    Consts.RES * Consts.CELL_SIDE, 5 * Consts.CELL_SIDE, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
-            Font font = new Font("Arial", Font.BOLD, 40);
-            g2.setFont(font);
-            g2.setColor(Color.WHITE);
-            g2.drawString(Integer.toString(controleDeJogo.getVidas()), Consts.RES * Consts.CELL_SIDE + 25, 3 * Consts.CELL_SIDE);
-            g2.drawString(Integer.toString(controleDeJogo.getMunicao()), Consts.RES * Consts.CELL_SIDE + 25, 7 * Consts.CELL_SIDE);
 
-        } catch (IOException ex) {
-            Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
+            if(controleDeJogo.isGameOver()){
+                controleDeJogo.desenhaTudo();
+                this.gameOver();
+            }else{
+                controleDeJogo.processaTudo();
+                controleDeJogo.desenhaTudo();
+            }
         }
-        
-        controleDeJogo.processaTudo();
-        controleDeJogo.desenhaTudo();
 
         g.dispose();
         g2.dispose();
@@ -171,9 +195,26 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
          * }
          * } else
          */
-
+        
+        if(e.getKeyCode() == KeyEvent.VK_R && controleDeJogo.isGameOver()){
+            controleDeJogo = new ControleDeJogo(5, 0, this);
+        }
+        
         controleDeJogo.teclaPressionada(e.getKeyCode());
         // repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
+    }
+    
+    public void gameOver(){
+        int meioTela = (Consts.RES * Consts.CELL_SIDE)/2;
+        Font font = new Font("Serif", Font.BOLD, 70);
+        g2.setFont(font);
+        g2.setColor(Color.RED);
+        g2.drawString("Game Over!", meioTela - 170, meioTela);
+        
+        font = new Font("Serif", Font.BOLD, 30);
+        g2.setFont(font);
+        g2.setColor(Color.WHITE);
+        g2.drawString("Pressione [R] para tentar novamente", meioTela - 210, meioTela + 50);
     }
 
     public void mousePressed(MouseEvent e) {

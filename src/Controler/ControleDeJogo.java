@@ -39,16 +39,26 @@ public class ControleDeJogo {
 
     private int vidas;
     private int municao;
+    private Tela tela;
+    
     private Fase faseAtual;
     private int numFaseAtual;
     private int maxFases;
+    
+    private boolean gameOver;
+    private boolean finalizado;
 
-    public ControleDeJogo(int vidas, int municao) {
+    public ControleDeJogo(int vidas, int municao, Tela tela) {
         this.vidas = vidas;
         this.municao = municao;
+        this.tela = tela;
+        
         this.numFaseAtual = 1;
         this.maxFases = 3;
         carregarFase(numFaseAtual);
+        
+        gameOver = false;
+        finalizado = false;
     }
 
     private void carregarFase(int numFase) {
@@ -84,8 +94,7 @@ public class ControleDeJogo {
                     carregarFase(this.numFaseAtual);
                     this.municao = 0;
                 } else {
-                    // gameover
-                    faseAtual.remove(lolo);
+                    gameOver = true;
                 }
             }
         }
@@ -221,11 +230,17 @@ public class ControleDeJogo {
         if (numFaseAtual <= maxFases) {
             this.carregarFase(numFaseAtual);
             this.municao = 0;
+        }else{
+            this.finalizado = true;
         }
     }
 
     public void teclaPressionada(int keyCode) {
+        if(this.isGameOver()){
+            return;
+        }
         Lolo lolo = faseAtual.getLolo();
+        
         switch (keyCode) {
             case KeyEvent.VK_UP:
                 lolo.moveUp();
@@ -344,6 +359,14 @@ public class ControleDeJogo {
     
     public int getMunicao(){
         return this.municao;
+    }
+    
+    public boolean isGameOver(){
+        return this.gameOver;
+    }
+    
+    public boolean isFinalizado(){
+        return this.finalizado;
     }
     
     public static ImageIcon carregarImagem(String nomeImagem){
