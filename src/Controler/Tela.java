@@ -139,7 +139,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             }
 
             if(controleDeJogo.isGameOver()){
-                controleDeJogo.desenhaTudo();
                 this.gameOver();
             }else{
                 controleDeJogo.processaTudo();
