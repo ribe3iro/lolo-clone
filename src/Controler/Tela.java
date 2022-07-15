@@ -17,7 +17,9 @@ import Modelo.Cobra;
 import Modelo.Elemento;
 import Modelo.Grama;
 import Modelo.Obstaculo;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -59,7 +61,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
         this.addKeyListener(this); /* teclado */
         /* Cria a janela do tamanho do tabuleiro + insets (bordas) da janela */
-        this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
+        this.setSize((Consts.RES+1) * Consts.CELL_SIDE + getInsets().left + getInsets().right,
                 Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
 
         this.setTitle("Adventures of Lolo 2 - Java Clone");
@@ -87,6 +89,37 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 }
             }
         }
+        for (int i = 0; i < Consts.RES; i++) {
+            try {
+                Image newImage = Toolkit.getDefaultToolkit()
+                        .getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "fundo.png");
+                g2.drawImage(newImage,
+                        Consts.RES * Consts.CELL_SIDE, i * Consts.CELL_SIDE, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+
+            } catch (IOException ex) {
+                Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        try {
+            Image newImage = Toolkit.getDefaultToolkit()
+                    .getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "lolo0.png");
+            g2.drawImage(newImage,
+                    Consts.RES * Consts.CELL_SIDE, 1 * Consts.CELL_SIDE, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+            newImage = Toolkit.getDefaultToolkit()
+                    .getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + "tiro.png");
+            g2.drawImage(newImage,
+                    Consts.RES * Consts.CELL_SIDE, 5 * Consts.CELL_SIDE, Consts.CELL_SIDE, Consts.CELL_SIDE, null);
+            Font font = new Font("Arial", Font.BOLD, 40);
+            g2.setFont(font);
+            g2.setColor(Color.WHITE);
+            g2.drawString(Integer.toString(controleDeJogo.getVidas()), Consts.RES * Consts.CELL_SIDE + 25, 3 * Consts.CELL_SIDE);
+            g2.drawString(Integer.toString(controleDeJogo.getMunicao()), Consts.RES * Consts.CELL_SIDE + 25, 7 * Consts.CELL_SIDE);
+
+        } catch (IOException ex) {
+            Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         controleDeJogo.processaTudo();
         controleDeJogo.desenhaTudo();
 
