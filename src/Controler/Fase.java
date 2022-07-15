@@ -13,6 +13,7 @@ import Modelo.Lolo;
 import Modelo.Obstaculo;
 import Modelo.Bau;
 import Modelo.BlocoEmpurravel;
+import Modelo.Caveira;
 import Modelo.Porta;
 import java.io.File;
 import java.io.FileInputStream;
@@ -239,6 +240,8 @@ public class Fase extends ArrayList<Elemento> implements Serializable {
         fase2.add(new Obstaculo(5, 10, "pedra.png"));
         // Inimigos
         fase2.add(new Cobra(7, 5));
+        fase2.add(new Caveira(3, 5));
+        fase2.add(new Caveira(6, 8));
 
         // colecionaveis
         fase2.add(new Coracao(6, 1, 2));
