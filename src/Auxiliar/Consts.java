@@ -16,7 +16,7 @@ public class Consts {
     public static final int RES = 13;
     public static final int PERIOD = 80;   
     public static final String PATH = File.separator+"imgs"+File.separator;
-    public static final int TIMER_CAVEIRA = 2;
+    public static final int TIMER_INIMIGO_MOVEL = 2;
     
     public static final int DOWN_DIR  = 0;
     public static final int LEFT_DIR  = 1;

@@ -15,33 +15,24 @@ import javax.swing.ImageIcon;
  *
  * @author joaop
  */
-public class Caveira extends Inimigo implements Movel{
+public class Tatu extends Inimigo implements Movel{
     int direcao;
-    boolean acordada;
     int contaFrames;
     private ArrayList<ImageIcon> sprites;
-    public Caveira(int linha, int coluna) {
-        super(linha, coluna, "caveira_dormindo.png");
-        this.acordada = false;
+    public Tatu(int linha, int coluna) {
+        super(linha, coluna, null);
         contaFrames = 0;
         
-        String nomeImagem = "caveira_acordada";
+        String nomeImagem = "tatu";
         sprites = new ArrayList<>();
         for(int i = 0; i <= 3; i++){
             sprites.add(ControleDeJogo.carregarImagem(nomeImagem + i + ".png")); 
        }
     }
     
-    public void acordar(){
-        Random rand = new Random();
-        if(!acordada){
-            this.acordada = true;
-            this.direcao = rand.nextInt(4);
-        }
-    }
 
     public void atualizar() {
-        if(acordada && contaFrames >= Consts.TIMER_INIMIGO_MOVEL){
+        if(contaFrames >= Consts.TIMER_INIMIGO_MOVEL){
             contaFrames = 0;
             switch(direcao){
                 case Consts.DOWN_DIR:
@@ -70,13 +61,9 @@ public class Caveira extends Inimigo implements Movel{
     }
     
     public void autoDesenho(){
-        if(this.acordada){
-            Desenho.desenhar(this.sprites.get(direcao), pPosicao.getColuna(), pPosicao.getLinha());
-            this.atualizar();
-            contaFrames++;
-        }else{
-            super.autoDesenho();
-        }
+        Desenho.desenhar(this.sprites.get(direcao), pPosicao.getColuna(), pPosicao.getLinha());
+        this.atualizar();
+        contaFrames++;
     }
 
     public boolean moveUp() {
@@ -97,9 +84,5 @@ public class Caveira extends Inimigo implements Movel{
 
     public void voltaAUltimaPosicao() {
         this.pPosicao.volta();
-    }
-    
-    public boolean isAcordada(){
-        return this.acordada;
     }
 }

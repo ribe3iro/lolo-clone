@@ -21,6 +21,7 @@ import Modelo.Perola;
 import Modelo.Tiro;
 import Auxiliar.Posicao;
 import Modelo.Caveira;
+import Modelo.Tatu;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -96,6 +97,15 @@ public class ControleDeJogo {
                 .forEach(caveira -> {
                     caveira.virar();
                     caveira.voltaAUltimaPosicao();
+                });
+        
+        // Processando Tatus
+        inimigos.stream()
+                .filter(inimigo -> inimigo instanceof Tatu && !this.ehPosicaoValida(inimigo))
+                .map(inimigo -> (Tatu)inimigo)
+                .forEach(tatu -> {
+                    tatu.virar();
+                    tatu.voltaAUltimaPosicao();
                 });
 
         // Bau bau = (Bau) ((ArrayList<Elemento>) faseAtual.stream().filter(elem -> elem
@@ -301,11 +311,26 @@ public class ControleDeJogo {
      */
     public boolean ehPosicaoValida(Elemento analisado) {
         Elemento pTemp;
-        for (int i = 0; i < faseAtual.size(); i++) {
-            pTemp = faseAtual.get(i);
-            if (!pTemp.isbTransponivel() && analisado != pTemp) {
-                if (pTemp.getPosicao().igual(analisado.getPosicao())) {
-                    return false;
+        if(analisado instanceof Lolo){
+            for (int i = 0; i < faseAtual.size(); i++) {
+                pTemp = faseAtual.get(i);
+                if (!pTemp.isbTransponivel() && analisado != pTemp) {
+                    if (pTemp.getPosicao().igual(analisado.getPosicao())) {
+                        return false;
+                    }
+                }
+            }
+        }
+        else if(analisado instanceof Empurravel || analisado instanceof Inimigo){
+            for (int i = 0; i < faseAtual.size(); i++) {
+                pTemp = faseAtual.get(i);
+                if ((!pTemp.isbTransponivel() || 
+                        (pTemp instanceof Colecionavel) || 
+                        (pTemp instanceof Bau)) && 
+                        analisado != pTemp) {
+                    if (pTemp.getPosicao().igual(analisado.getPosicao())) {
+                        return false;
+                    }
                 }
             }
         }
